@@ -220,14 +220,14 @@ def executeCalc():
                     ### cierro la ventana
                     act_vent_calc = "Cerrada"
                 ### si la ventana esta cerrada
-                else
+                else:
                     #### si la persiana esta abierta
                     if rAct_pers_Medicion == "Abierta":
-                    act_pers_calc = "Cerrada"
+                        act_pers_calc = "Cerrada"
                     #### si la persiana esta cerrada
-                    else
-                    act_temp_calc = rUmbral_Temp_Medicion - rSensor_temp_int_Medicion
-                    act_ilum = rSensor_ilum_int_Medicion - rUmbral_ilum_Medicion
+                    else:
+                        act_temp_calc = rUmbral_Temp_Medicion - rSensor_temp_int_Medicion
+                        act_ilum = rSensor_ilum_int_Medicion - rUmbral_ilum_Medicion
                 
 
     #rUmbral_ilum_Medicion > rSensor_ilum_int_Medicion:
