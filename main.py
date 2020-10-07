@@ -2,11 +2,17 @@ import requests
 from flask import Flask, jsonify 
 from flask_cors import CORS
 
+
 app = Flask(__name__)
 
 #cors = CORS(app, resources={r"/calculos": {"origins": "http://localhost:port"}})
 CORS(app)
+@app.route('/', methods=["GET"])
+def execute():
+    return {'Respuesta': 'API REST Desarrollada por Gaston Valdos para el Trabajo Final de Graduacion de Licenciatura en Informatica (2020) - Esta API cumple la funcion de ejecutar la logica de control del sistema'},200
+
 @app.route('/calculos', methods=["GET"])
+
 def executeCalc():
 
     urlSensores = 'http://localhost:3010/sensores'
@@ -28,17 +34,17 @@ def executeCalc():
     act_ilum = '5ef9217cf6aa3a589cf22a49'
    
 
-######################################################################################################
-############         En este bloque voy a intentar traer todos los sensores        ###################
-#    rSensores = requests.get(urlSensores )  # Armo la llamada a la API para de sensores
-#    if rSensores.status_code == 200: # Chequeo si el resultado de la API fue correcto
-#        rSensores_json = rSensores.json() # paso el resultado a JSON
-#        rSensores_Names = rSensores_json['identificador'] #Obtengo la lista de nombres de sensores 
-#        print('lista completa de sensores')
-#        print(rSensores_json)
-#        print('lista de nombres de los sensores')
-#        print(rSensores_Names)
-#######################################################################################################
+    ######################################################################################################
+    ############         En este bloque voy a intentar traer todos los sensores        ###################
+    #    rSensores = requests.get(urlSensores )  # Armo la llamada a la API para de sensores
+    #    if rSensores.status_code == 200: # Chequeo si el resultado de la API fue correcto
+    #        rSensores_json = rSensores.json() # paso el resultado a JSON
+    #        rSensores_Names = rSensores_json['identificador'] #Obtengo la lista de nombres de sensores 
+    #        print('lista completa de sensores')
+    #        print(rSensores_json)
+    #        print('lista de nombres de los sensores')
+    #        print(rSensores_Names)
+    #######################################################################################################
 
 
 
@@ -96,7 +102,7 @@ def executeCalc():
 
     ###############################################################
     ###       Este bloque trae el umbral de Temperatura         ###
-    print (urlUmbrales + '/' + umbr_temp)
+    #print (urlUmbrales + '/' + umbr_temp)
     rUmbral_temp = requests.get(urlUmbrales + '/' + umbr_temp)  # Armo la llamada a la API para el sensor de temp interior
     if rUmbral_temp.status_code == 200: # Chequeo si el resultado de la API fue correcto
         rUmbral_temp_json = rUmbral_temp.json() # paso el resultado a JSON
@@ -107,7 +113,7 @@ def executeCalc():
     
     ###############################################################
     ###       Este bloque trae el umbral de Temperatura         ###
-    print (urlUmbrales + '/' + umbr_ilum)
+    #print (urlUmbrales + '/' + umbr_ilum)
     rUmbral_ilum = requests.get(urlUmbrales + '/' + umbr_ilum)  # Armo la llamada a la API para el sensor de temp interior
     if rUmbral_temp.status_code == 200: # Chequeo si el resultado de la API fue correcto
         rUmbral_ilum_json = rUmbral_ilum.json() # paso el resultado a JSON
@@ -118,7 +124,7 @@ def executeCalc():
 
     #####################################################################
     ###  Este bloque trae el valor actual del actuador de Temperatura ###
-    print (urlActuadores + '/' + act_temp)
+    #print (urlActuadores + '/' + act_temp)
     rAct_temp = requests.get(urlActuadores + '/' + act_temp)  # Armo la llamada a la API para el Actuador de Temperatura interior
     if rAct_temp.status_code == 200: # Chequeo si el resultado de la API fue correcto
         rAct_temp_json = rAct_temp.json() # paso el resultado a JSON
@@ -130,7 +136,7 @@ def executeCalc():
 
     #####################################################################
     ###  Este bloque trae el valor actual del actuador de Iluminacion ###
-    print (urlActuadores + '/' + act_ilum)
+    #print (urlActuadores + '/' + act_ilum)
     rAct_ilum = requests.get(urlActuadores + '/' + act_ilum)  # Armo la llamada a la API para el Actuador de Iluminacion interior
     if rAct_ilum.status_code == 200: # Chequeo si el resultado de la API fue correcto
         rAct_ilum_json = rAct_ilum.json() # paso el resultado a JSON
@@ -142,7 +148,7 @@ def executeCalc():
 
     #####################################################################
     ###  Este bloque trae el valor actual del actuador de Apertura de ventanas ###
-    print (urlActuadores + '/' + act_vent)
+    #print (urlActuadores + '/' + act_vent)
     rAct_vent = requests.get(urlActuadores + '/' + act_vent)  # Armo la llamada a la API para el Actuador de Apertura de ventanas
     if rAct_vent.status_code == 200: # Chequeo si el resultado de la API fue correcto
         rAct_vent_json = rAct_vent.json() # paso el resultado a JSON
@@ -154,7 +160,7 @@ def executeCalc():
 
     #####################################################################
     ###  Este bloque trae el valor actual del actuador de Apertura de Persianas ###
-    print (urlActuadores + '/' + act_pers)
+    #print (urlActuadores + '/' + act_pers)
     rAct_pers = requests.get(urlActuadores + '/' + act_pers)  # Armo la llamada a la API para el Actuador de APertura de Persianas
     if rAct_pers.status_code == 200: # Chequeo si el resultado de la API fue correcto
         rAct_pers_json = rAct_pers.json() # paso el resultado a JSON
@@ -167,32 +173,42 @@ def executeCalc():
     ###################################################################
     ###   Aca hay que meter la logica o la llamada a un servicio de ###
     ###   computacion cognitiva para que devuelva los resultados    ###
+    ###################################################################
+    # #
+   
     ### Verifico si el usuario esta presente, con presencia > o igual a 50
     if  rSensor_pres_int_Medicion < 50:
-        act_ilum_calc = 0
-        act_temp_calc = 0
-        act_vent_calc = "Cerrada"
-        act_pers_calc = "Cerrada"
         print ('el usuario no esta presente Apago todo')
-
+        act_ilum_calc = 0
+        print ('Apago regulacion de Iluminacion')
+        act_temp_calc = 0
+        print ('Apago regulacion de Temperatura')
+        act_vent_calc = "Cerrada"
+        print ('Cierro Ventana')
+        act_pers_calc = "Cerrada"
+        print ('Cierro Persiana')
+       
     else:
-        print ('Me dio = o mayor a 50')
+        print ('Presencia igual o mayor a 50 - el usuario esta presente')
         print ('Temperatura interior: ')
         print (rSensor_temp_int_Medicion)
         print ('Temperatura configurada: ')
         print (rUmbral_Temp_Medicion)
-        ####### Temperatura interior es mayor a la deseada #######       
+        ####### Temperatura interior es mayor a la deseada #######
         if rSensor_temp_int_Medicion > rUmbral_Temp_Medicion:
             print ('Temp interior > a la deseada ')
             ##### Temperatura interior mayor a Temperatura Exterior
             if rSensor_temp_int_Medicion > rSensor_temp_ext_Medicion:
+                print ('temperatura interior es mayor a la exterior')
                 print ('estado de persiana:')
                 print (rAct_pers_Medicion)
                 #### si la persiana esta abierta
                 if rAct_pers_Medicion == "Abierta":
+                    print('la persiana esta abierta la cierro')
                     act_pers_calc = "Cerrada"
                     ### si la ventana esta abierta
-                    if rAct_temp_Medicion == "Abierta":
+                    if rAct_vent_Medicion == "Abierta":
+                        print('la ventana esta abierta la cierro')
                         act_vent_calc = "Cerrada"
                         act_temp_calc = rUmbral_Temp_Medicion - rSensor_temp_int_Medicion
                         act_ilum = rSensor_ilum_int_Medicion - rUmbral_ilum_Medicion
@@ -206,8 +222,12 @@ def executeCalc():
             if rSensor_temp_int_Medicion <= rSensor_temp_ext_Medicion:
                 print ('Temperatura Interior <= exterior => Cierro Ventana')
                 act_vent_calc = "Cerrada"
-                act_temp_calc = rSensor_temp_int_Medicion - rUmbral_Temp_Medicion
+                
+                act_temp_calc = rUmbral_Temp_Medicion - rSensor_temp_int_Medicion
                 print ('corregir temperatura')
+                print (act_temp_calc)
+                act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+                print ('corregir iluminacion')
                 print (act_temp_calc)
 
         ####### Temperatura interior es menor a la deseada #######  
@@ -223,12 +243,52 @@ def executeCalc():
                 else:
                     #### si la persiana esta abierta
                     if rAct_pers_Medicion == "Abierta":
-                        act_pers_calc = "Cerrada"
+                        act_pers_calc ="Cerrada"
                     #### si la persiana esta cerrada
                     else:
                         act_temp_calc = rUmbral_Temp_Medicion - rSensor_temp_int_Medicion
-                        act_ilum = rSensor_ilum_int_Medicion - rUmbral_ilum_Medicion
-                
+                        act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+        else:
+            print('temperatura interior igual a la deseada')
+            #act_temp_calc = rUmbral_Temp_Medicion - rSensor_temp_int_Medicion
+            #act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+
+            if rUmbral_ilum_Medicion < rSensor_ilum_int_Medicion:
+                print ('la iluminacion interior es menor a la configuracion')
+                if rSensor_ilum_int_Medicion > rSensor_ilum_ext_Medicion:
+                    print ('la iluminacion interior es menor a la exteior')
+                    #### si la persiana esta abierta
+                    if rAct_pers_Medicion == "Abierta":
+                        print('La persiana esta abierta')
+                        print('regular iluminacion')
+                        act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+                        print(act_ilum_calc)
+                    else:
+                        print('La persiana esta cerrada, la abro')
+                        act_pers_calc ="Abierta"
+                else:
+                    print('Iluminacion interior es mayor a la exterior')
+                    print('regular iluminacion')
+                    act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+                    print(act_ilum_calc)
+            else:
+                print ('la iluminacion interior es mayor a la configuracion')
+                if rSensor_ilum_int_Medicion > rSensor_ilum_ext_Medicion:
+                    print ('la iluminacion interior es menor a la exteior')
+                    print('regular iluminacion')
+                    act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+                    print(act_ilum_calc)
+                else:
+                    print ('la iluminacion interior es mayor a la exteior')
+                    if rAct_pers_Medicion == "Abierta":
+                        print('La persiana esta abierta, la cierro')
+                        act_pers_calc ="Cerrada"
+                    else:
+                        print('La persiana esta cerrada')
+                        print('regular iluminacion')
+                        act_ilum_calc = rUmbral_ilum_Medicion - rSensor_ilum_int_Medicion
+                        print(act_ilum_calc)
+
 
     #rUmbral_ilum_Medicion > rSensor_ilum_int_Medicion:
     #    act_ilum_calc = rUmbral_ilum_Medicion
@@ -290,7 +350,7 @@ def executeCalc():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+     app.run(debug=True, host='0.0.0.0', port=5000)
 
 
     
